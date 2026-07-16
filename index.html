@@ -15,6 +15,8 @@
             align-items: center;
             padding: 2rem;
             margin: 0;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
         h1 {
             color: #58a6ff;
@@ -29,6 +31,7 @@
             gap: 20px;
             width: 100%;
             max-width: 800px;
+            flex: 1; /* ช่วยดัน footer ให้ไปอยู่ด้านล่างสุดหากเนื้อหาน้อย */
         }
         .card {
             background: #161b22;
@@ -88,6 +91,23 @@
         input:checked + .slider:before {
             transform: translateX(26px);
         }
+
+        /*ส่วนตกแต่งเครดิตผู้พัฒนาระบบด้านล่างสุด*/
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem 0;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        footer .highlight {
+            color: #58a6ff;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +152,10 @@
         </div>
     </div>
 
+    <footer>
+        ผู้พัฒนาระบบ: <span class="highlight">ครูวิทยากร วรรณา</span> | แผนกอิเล็กทรอนิกส์ วิทยาลัยสารพัดช่างศรีสะเกษ
+    </footer>
+
     <script type="module">
         // 1. Import ฟังก์ชันที่จำเป็นจาก Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -141,7 +165,7 @@
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com", // สำคัญมากสำหรับ Realtime Database
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com", 
             projectId: "YOUR_PROJECT_ID",
             storageBucket: "YOUR_PROJECT_ID.appspot.com",
             messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
@@ -156,13 +180,11 @@
         const channels = ['ch1', 'ch2', 'ch3', 'ch4'];
 
         // 4. สร้างฟังก์ชันสำหรับฟังการเปลี่ยนแปลงจาก Firebase (รับข้อมูลมาแสดงที่ UI)
-        // สมมติว่าโครงสร้าง Database ของเราเก็บไว้ที่ path: /SmartHome/Devices
         const devicesRef = ref(database, 'SmartHome/Devices');
         
         onValue(devicesRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                // อัปเดตสถานะสวิตช์บนหน้าเว็บตามฐานข้อมูล
                 channels.forEach(ch => {
                     if(data[ch] !== undefined) {
                         document.getElementById(ch).checked = data[ch];
@@ -176,14 +198,12 @@
             const toggleSwitch = document.getElementById(ch);
             toggleSwitch.addEventListener('change', (event) => {
                 const status = event.target.checked;
-                // ส่งค่า true/false ไปที่ /SmartHome/Devices/{ch1, ch2...}
                 set(ref(database, 'SmartHome/Devices/' + ch), status)
                     .then(() => {
                         console.log(`${ch} is now ${status ? 'ON' : 'OFF'}`);
                     })
                     .catch((error) => {
                         console.error("Error updating database: ", error);
-                        // คืนค่าสวิตช์กลับหากเกิดข้อผิดพลาด
                         event.target.checked = !status; 
                         alert("เกิดข้อผิดพลาดในการเชื่อมต่อ Firebase");
                     });
