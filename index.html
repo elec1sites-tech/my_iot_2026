@@ -235,7 +235,7 @@
         // ==========================================
         // 📌 ตั้งค่า URL ของ Google Apps Script ที่นี่
         // ==========================================
-        const SCRIPT_URL = "วาง_URL_ของ_GOOGLE_APPS_SCRIPT ที่นี่";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwMLHcG8x-mlEL8CCHB_oNNIUHeFs7sLS7nxpNYTEOYiBSvRMSu6Uwlp1GUJB53jIG1Gw/exec";
         
         const form = document.getElementById('storeForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -245,8 +245,8 @@
             e.preventDefault(); // ป้องกันหน้าเว็บกระพริบโหลดใหม่
 
             // ตรวจสอบว่าใส่ URL หรือยัง
-            if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbx_tF8DXj7eVS2CV8hFNo6PrUgCYDVSshK874tZh7g7BB8XeLvBCJQ3kRGvUNY1St5kbQ/exec"") {
-                showAlert("https://script.google.com/macros/s/AKfycbzbCRVbwGLZo-RFlfuFQ9fjlWBfmbuqpi1t0fGNBmIza2xZa75jxKeh8pBZmJwj_TDl/exec", "error");
+            if (SCRIPT_URL === "วาง_URL_ของ_GOOGLE_APPS_SCRIPT ที่นี่" || SCRIPT_URL === "") {
+                showAlert("กรุณาใส่ SCRIPT_URL ในโค้ดก่อนครับ!", "error");
                 return;
             }
 
