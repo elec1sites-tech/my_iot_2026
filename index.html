@@ -3,408 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกรับ-จ่าย ร้านเครื่องปรับอากาศ</title>
-    <!-- เรียกใช้ Bootstrap 5 สำหรับโครงสร้างที่รองรับทุกหน้าจอ -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- ฟอนต์ภาษาไทย Prompt -->
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>ระบบบันทึกรับ-จ่าย ร้านขายของชำ</title>
+    <!-- นำเข้าฟอนต์ภาษาไทย Sarabun จาก Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* CSS ตกแต่ง UI ให้สวยงามและทันสมัย */
+        :root {
+            --primary-color: #10b981; /* สีเขียวหลัก */
+            --primary-hover: #059669; /* สีเขียวเมื่อเอาเมาส์ชี้ */
+            --bg-color: #f0fdf4; /* สีพื้นหลังเว็บ */
+            --card-bg: #ffffff; /* สีพื้นหลังการ์ด */
+            --text-main: #1f2937; /* สีข้อความหลัก */
+            --text-muted: #6b7280; /* สีข้อความรอง */
+            --border-color: #d1d5db; /* สีเส้นขอบ */
+        }
+
         body {
-            font-family: 'Prompt', sans-serif;
-            background-color: #f0f4f8;
-            padding: 30px 0;
-        }
-        .card {
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            border: none;
-        }
-        .card-header {
-            background-color: #2980b9; /* สีฟ้าธีมแอร์และระบบความเย็น */
-            color: white;
-            border-radius: 16px 16px 0 0 !important;
-            text-align: center;
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        .btn-primary {
-            background-color: #2980b9;
-            border: none;
-            padding: 12px;
-            font-weight: 500;
+
+        .form-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: var(--primary-hover);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* ตกแต่งช่องกรอกข้อมูลและตัวเลือก */
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Sarabun', sans-serif;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        .btn-primary:hover {
-            background-color: #1f618d;
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
-        .form-label {
+
+        /* ตกแต่งปุ่ม Radio สำหรับเลือกรายรับ/รายจ่าย */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .radio-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-option label {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
             font-weight: 500;
-            color: #2c3e50;
         }
+
+        .radio-option input[type="radio"]:checked + label {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* ปุ่ม Submit */
+        .submit-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-family: 'Sarabun', sans-serif;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .submit-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* กล่องแสดงข้อความแจ้งเตือน */
+        #alertMessage {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            display: none; /* ซ่อนไว้ก่อน */
+        }
+        
+        .alert-success { background-color: #d1fae5; color: #065f46; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">❄️ ระบบบันทึกรับ-จ่าย ร้านเครื่องปรับอากาศ</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form id="acTransactionForm">
-                        
-                        <!-- แถวที่ 1: วันที่ และ เวลา -->
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label class="form-label">วันที่</label>
-                                <input type="date" class="form-control" id="date" name="date" required>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">เวลา</label>
-                                <input type="time" class="form-control" id="time" name="time" required>
-                            </div>
-                        </div>
+    <div class="form-container">
+        <div class="header">
+            <h2>🛒 บันทึกรับ-จ่าย</h2>
+            <p>ระบบจัดการการเงิน ร้านขายของชำ</p>
+        </div>
 
-                        <!-- แถวที่ 2: ประเภท และ หมวดหมู่บริการ -->
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label class="form-label">ประเภทรายการ</label>
-                                <select class="form-select" id="type" name="type" required>
-                                    <option value="รายรับ">รายรับ (เงินเข้า)</option>
-                                    <option value="รายจ่าย">รายจ่าย (เงินออก)</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">หมวดหมู่</label>
-                                <select class="form-select" id="category" name="category" required>
-                                    <!-- หมวดหมู่เฉพาะของร้านเครื่องปรับอากาศ -->
-                                    <option value="งานล้างแอร์">งานล้างแอร์</option>
-                                    <option value="งานติดตั้งแอร์">งานติดตั้งแอร์</option>
-                                    <option value="งานซ่อม/เปลี่ยนอะไหล่">งานซ่อม/เปลี่ยนอะไหล่</option>
-                                    <option value="งานเติมน้ำยาแอร์">งานเติมน้ำยาแอร์</option>
-                                    <option value="ขายเครื่องปรับอากาศ">ขายเครื่องปรับอากาศ</option>
-                                    <option value="ซื้ออุปกรณ์/อะไหล่แอร์">ซื้ออุปกรณ์/อะไหล่แอร์ (รายจ่าย)</option>
-                                    <option value="ค่าน้ำมัน/ค่าเดินทาง">ค่าน้ำมัน/ค่าเดินทาง (รายจ่าย)</option>
-                                    <option value="อื่นๆ">อื่นๆ</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- แถวที่ 3: รายละเอียดหน้างาน -->
-                        <div class="mb-3">
-                            <label class="form-label">รายละเอียด / สถานที่หน้างาน</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="เช่น ล้างแอร์บ้านลูกค้าคุณสมชาย 12,000 BTU" required>
-                        </div>
-
-                        <!-- แถวที่ 4: จำนวนเงิน และ ช่องทางเงิน -->
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label class="form-label">จำนวนเงิน (บาท)</label>
-                                <input type="number" class="form-control" id="amount" name="amount" min="0" step="any" required>
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">ช่องทางชำระเงิน</label>
-                                <select class="form-select" id="paymentMethod" name="paymentMethod" required>
-                                    <option value="เงินสด">เงินสด</option>
-                                    <option value="โอนเงินผ่านธนาคาร">โอนเงินผ่านธนาคาร</option>
-                                    <option value="เครดิต/เช็ค">เครดิต / เช็ค</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- แถวที่ 5: ชื่อช่างที่รับผิดชอบงาน -->
-                        <div class="mb-4">
-                            <label class="form-label">ชื่อช่าง / ผู้ปฏิบัติงาน</label>
-                            <input type="text" class="form-control" id="technicianName" name="technicianName" placeholder="ระบุชื่อช่างที่เข้าทำงาน เช่น ช่างบอย, ช่างเก่ง" required>
-                        </div>
-
-                        <!-- ปุ่มบันทึก -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">💾 บันทึกข้อมูลระบบแอร์</button>
-                        </div>
-                        
-                        <!-- กล่องแจ้งเตือนสถานะ -->
-                        <div id="alertMessage" class="mt-3 text-center" style="display: none;"></div>
-                    </form>
+        <form id="storeForm">
+            <!-- 1. ประเภทรายการ (ใช้ Radio Button เพื่อความสวยงามและกดง่าย) -->
+            <div class="form-group">
+                <label>ประเภทรายการ</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="typeIn" name="type" value="รายรับ" required checked>
+                        <label for="typeIn">รายรับ 📈</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="typeOut" name="type" value="รายจ่าย" required>
+                        <label for="typeOut">รายจ่าย 📉</label>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- 2. หมวดหมู่ -->
+            <div class="form-group">
+                <label for="category">หมวดหมู่</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>-- เลือกหมวดหมู่ --</option>
+                    <option value="ขายสินค้าหน้าร้าน">ขายสินค้าหน้าร้าน (รายรับ)</option>
+                    <option value="ซื้อของเข้าร้าน">ซื้อของเข้าร้าน (รายจ่าย)</option>
+                    <option value="ค่าน้ำ/ค่าไฟ">ค่าน้ำ/ค่าไฟ (รายจ่าย)</option>
+                    <option value="ค่าจ้างพนักงาน">ค่าจ้างพนักงาน (รายจ่าย)</option>
+                    <option value="เบ็ดเตล็ด">เบ็ดเตล็ด</option>
+                </select>
+            </div>
+
+            <!-- 3. รายละเอียด -->
+            <div class="form-group">
+                <label for="description">รายละเอียด</label>
+                <input type="text" id="description" name="description" placeholder="เช่น น้ำดื่ม, บิลแม็คโคร, ค่าไฟเดือนนี้" required>
+            </div>
+
+            <!-- 4. จำนวนเงิน -->
+            <div class="form-group">
+                <label for="amount">จำนวนเงิน (บาท)</label>
+                <input type="number" id="amount" name="amount" min="0" step="0.25" placeholder="0.00" required>
+            </div>
+
+            <!-- 5. วิธีการชำระเงิน -->
+            <div class="form-group">
+                <label for="paymentMethod">วิธีชำระเงิน</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="เงินสด">💵 เงินสด</option>
+                    <option value="โอนเงิน/สแกน QR">📱 โอนเงิน / สแกน QR</option>
+                </select>
+            </div>
+
+            <!-- 6. ชื่อผู้บันทึก -->
+            <div class="form-group">
+                <label for="recordedBy">ชื่อผู้บันทึก (พนักงาน)</label>
+                <input type="text" id="recordedBy" name="recordedBy" placeholder="กรอกชื่อพนักงาน" required>
+            </div>
+
+            <button type="submit" id="submitBtn" class="submit-btn">บันทึกข้อมูล</button>
+        </form>
+
+        <!-- พื้นที่แสดงข้อความเมื่อบันทึกสำเร็จ/ล้มเหลว -->
+        <div id="alertMessage"></div>
     </div>
-</div>
 
-<script>
-    // -------------------------------------------------------------
-    // นำ URL ของ Web App จาก Google Apps Script (ไฟล์ Code.gs) มาวางแทนที่ข้อความด้านล่าง
-    // -------------------------------------------------------------
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-XlBzstFZ3YIU8Jl53dPWO-g2ev4iYj2WMHhR5-JpNimun3GRW8RM7KHxGUHsc9_6Bg/exec";
-
-    // กำหนดค่าเริ่มต้นให้กับฟิลด์ วันที่ และ เวลา เป็นปัจจุบันอัตโนมัติ
-    document.addEventListener("DOMContentLoaded", function() {
-        const now = new Date();
-        document.getElementById('date').valueAsDate = now;
+    <script>
+        // ==========================================
+        // 📌 ตั้งค่า URL ของ Google Apps Script ที่นี่
+        // ==========================================
+        const SCRIPT_URL = "วาง_URL_ของ_GOOGLE_APPS_SCRIPT ที่นี่";
         
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('time').value = `${hours}:${minutes}`;
-    });
+        const form = document.getElementById('storeForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertBox = document.getElementById('alertMessage');
 
-    const form = document.getElementById('acTransactionForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const alertMessage = document.getElementById('alertMessage');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // ป้องกันหน้าเว็บกระพริบโหลดใหม่
 
-    form.addEventListener('submit', e => {
-        e.preventDefault(); 
-        
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '⏳ กำลังบันทึกข้อมูลเข้า Sheet...';
-        alertMessage.style.display = 'none';
+            // ตรวจสอบว่าใส่ URL หรือยัง
+            if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzisKoO1hdTQO1KP8aAqMpWeLbSvPr2jDRKMo0FIK5YBX-ON5KHqIgYgVdTPHjiiJeq4w/exec" || SCRIPT_URL === "") {
+                showAlert("กรุณาใส่ SCRIPT_URL ในโค้ดก่อนครับ!", "error");
+                return;
+            }
 
-        const formData = new FormData(form);
+            // เปลี่ยนปุ่มเป็นสถานะกำลังโหลด
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = "กำลังบันทึกข้อมูล... ⏳";
+            alertBox.style.display = "none"; // ซ่อนกล่องแจ้งเตือนเก่า
 
-        // ยิง Fetch API ส่งข้อมูลแบบ POST ไปยัง Google Apps Script หลังบ้าน
-        fetch(SCRIPT_URL, { method: 'POST', body: formData })
+            // ดึงข้อมูลทั้งหมดจากฟอร์ม
+            let requestBody = new FormData(form);
+
+            // ส่งข้อมูลไปยัง Google Apps Script
+            fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                body: requestBody 
+            })
             .then(response => {
-                alertMessage.className = 'mt-3 text-center text-success fw-bold';
-                alertMessage.innerHTML = '✅ บันทึกข้อมูลงานแอร์เรียบร้อยแล้ว!';
-                alertMessage.style.display = 'block';
-                
-                // รีเซ็ตค่าในฟอร์มยกเว้นวันที่และเวลา
-                form.reset();
-                
-                const now = new Date();
-                document.getElementById('date').valueAsDate = now;
-                document.getElementById('time').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                // บันทึกสำเร็จ
+                showAlert("✅ บันทึกข้อมูลเรียบร้อยแล้ว!", "success");
+                form.reset(); // ล้างฟอร์ม
             })
             .catch(error => {
+                // เกิดข้อผิดพลาด
+                showAlert("❌ เกิดข้อผิดพลาด ไม่สามารถบันทึกได้", "error");
                 console.error('Error!', error.message);
-                alertMessage.className = 'mt-3 text-center text-danger fw-bold';
-                alertMessage.innerHTML = '❌ เกิดข้อผิดพลาดทางเทคนิค ไม่สามารถส่งข้อมูลได้';
-                alertMessage.style.display = 'block';
             })
             .finally(() => {
+                // คืนค่าปุ่มกลับมาเหมือนเดิม
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '💾 บันทึกข้อมูลระบบแอร์';
-                
+                submitBtn.innerHTML = "บันทึกข้อมูล";
+            });
+        });
+
+        // ฟังก์ชันสำหรับแสดงข้อความแจ้งเตือน
+        function showAlert(message, type) {
+            alertBox.innerHTML = message;
+            alertBox.className = type === "success" ? "alert-success" : "alert-error";
+            alertBox.style.display = "block";
+            
+            // ให้กล่องแจ้งเตือนหายไปเองหลังผ่านไป 5 วินาที
+            if (type === "success") {
                 setTimeout(() => {
-                    alertMessage.style.display = 'none';
-                }, 3000);
-            });
-    });
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Smart Home Controller</title>
-    <style>
-        /* CSS ตกแต่งหน้าเว็บ (Dark Theme สไตล์ IoT) */
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            margin: 0;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        h1 {
-            color: #58a6ff;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 2rem;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 800px;
-            flex: 1; /* ช่วยดัน footer ให้ไปอยู่ด้านล่างสุดหากเนื้อหาน้อย */
-        }
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: #58a6ff;
-        }
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-        .channel-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #ffffff;
-        }
-        /* ตกแต่งปุ่ม Toggle Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #484f58;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px; width: 26px;
-            left: 4px; bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #238636; /* สีเขียวเมื่อเปิดใช้งาน */
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        /*ส่วนตกแต่งเครดิตผู้พัฒนาระบบด้านล่างสุด*/
-        footer {
-            margin-top: 3rem;
-            padding: 1.5rem 0;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-            border-top: 1px solid #30363d;
-            color: #8b949e;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-        }
-        footer .highlight {
-            color: #58a6ff;
-            font-weight: 500;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>IoT Smart Home Controller</h1>
-
-    <div class="grid-container">
-        <div class="card">
-            <div class="icon">💡</div>
-            <div class="channel-name">CH1: Light 1</div>
-            <label class="switch">
-                <input type="checkbox" id="ch1">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="card">
-            <div class="icon">🌀</div>
-            <div class="channel-name">CH2: Fan</div>
-            <label class="switch">
-                <input type="checkbox" id="ch2">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="card">
-            <div class="icon">📺</div>
-            <div class="channel-name">CH3: TV</div>
-            <label class="switch">
-                <input type="checkbox" id="ch3">
-                <span class="slider"></span>
-            </label>
-        </div>
-
-        <div class="card">
-            <div class="icon">🔌</div>
-            <div class="channel-name">CH4: Plug</div>
-            <label class="switch">
-                <input type="checkbox" id="ch4">
-                <span class="slider"></span>
-            </label>
-        </div>
-    </div>
-
-    <footer>
-        ผู้พัฒนาระบบ: <span class="highlight">ครูวิทยากร วรรณา</span> | แผนกอิเล็กทรอนิกส์ วิทยาลัยสารพัดช่างศรีสะเกษ
-    </footer>
-
-    <script type="module">
-        // 1. Import ฟังก์ชันที่จำเป็นจาก Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-        // 2. ตั้งค่า Firebase Config ของคุณ (!!! ต้องนำค่าจาก Project ของคุณมาใส่แทนที่ !!!)
-        const firebaseConfig = {
-           apiKey: "AIzaSyCvhzRKZg6pqhO_uqmjDxhX4EpJ2XJByPs",
-  authDomain: "myiot2026-473f5.firebaseapp.com",
-  databaseURL: "https://myiot2026-473f5-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "myiot2026-473f5",
-  storageBucket: "myiot2026-473f5.firebasestorage.app",
-  messagingSenderId: "798810389806",
-  appId: "1:798810389806:web:92fd9366fbe53b066fcebf",
-  measurementId: "G-F29GZY6315"
-};
-
-        // 3. เริ่มต้นระบบ Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // รายชื่อ ID ของสวิตช์ใน HTML
-        const channels = ['ch1', 'ch2', 'ch3', 'ch4'];
-
-        // 4. สร้างฟังก์ชันสำหรับฟังการเปลี่ยนแปลงจาก Firebase (รับข้อมูลมาแสดงที่ UI)
-        const devicesRef = ref(database, 'SmartHome/Devices');
-        
-        onValue(devicesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                channels.forEach(ch => {
-                    if(data[ch] !== undefined) {
-                        document.getElementById(ch).checked = data[ch];
-                    }
-                });
+                    alertBox.style.display = "none";
+                }, 5000);
             }
-        });
-
-        // 5. สร้าง Event Listener เมื่อผู้ใช้กดคลิกสวิตช์บนเว็บ ให้ส่งค่าไปยัง Firebase
-        channels.forEach(ch => {
-            const toggleSwitch = document.getElementById(ch);
-            toggleSwitch.addEventListener('change', (event) => {
-                const status = event.target.checked;
-                set(ref(database, 'SmartHome/Devices/' + ch), status)
-                    .then(() => {
-                        console.log(`${ch} is now ${status ? 'ON' : 'OFF'}`);
-                    })
-                    .catch((error) => {
-                        console.error("Error updating database: ", error);
-                        event.target.checked = !status; 
-                        alert("เกิดข้อผิดพลาดในการเชื่อมต่อ Firebase");
-                    });
-            });
-        });
+        }
     </script>
 </body>
 </html>
